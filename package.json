@@ -7,9 +7,12 @@
     "build": "vue-cli-service build"
   },
   "dependencies": {
-    "vue": "^3.0.0"
+    "sweetalert": "^2.1.2",
+    "vue": "^3.0.0",
+    "vue-router": "^4.0.0-0"
   },
   "devDependencies": {
+    "@vue/cli-plugin-router": "~4.5.0",
     "@vue/cli-service": "~4.5.0",
     "@vue/compiler-sfc": "^3.0.0",
     "sass": "^1.26.5",
