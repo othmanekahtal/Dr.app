@@ -18,8 +18,8 @@ export default {
 @import "../assets/sass/Abstracts/variables";
 button {
   cursor: pointer;
-  border:none;
-  outline: 2px solid transparent;
+  outline:none;
+  border: none;
   align-self: center;
   font-weight: 300;
   color: white;
@@ -27,10 +27,11 @@ button {
   display: inline-block;
   border-radius: 5rem;
   padding: 1rem 7.5rem;
+  box-shadow: 5px 5px 1.5rem rgba(black,.75);
   background-image: linear-gradient(to top left,$blue-color,$purple-color);
   transition: all .6s ease-in-out;
 &:active {
-  outline: 2px solid darken($purple-color,10%);
+  background-image: linear-gradient(to top left,darken($blue-color,5%),darken($purple-color,5%));
 }
 }
 </style>

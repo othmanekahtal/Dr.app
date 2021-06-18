@@ -45,6 +45,8 @@ export default {
 
   &__input {
     all: unset;
+    color: $gray-color;
+    caret-color: $gray-1-color;
     background-color: $gray-3-color;
     border-radius: .5rem;
     padding: 1.25rem;
