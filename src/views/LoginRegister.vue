@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <Login @flipped ='FlipOption' class="login-part front-showed"/>
+    <Login class="login-part front-showed"/>
     <Register class="back-visible "/>
   </div>
 </template>
@@ -12,18 +12,6 @@ import Register from "../components/Register";
 export default {
   name: "LoginRegister",
   components: {Login, Register},
-  methods: {
-    FlipOption(event) {
-      console.log(event)
-      console.log('eee')
-      let container = event.target.closest('.container');
-      container.classList.toggle('reverse');
-      [...container.children].forEach(child => {
-        child.classList.toggle('front-showed');
-        child.classList.toggle('back-visible')
-      })
-    }
-  }
 }
 </script>
 

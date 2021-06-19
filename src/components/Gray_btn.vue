@@ -5,10 +5,8 @@
 <script>
 export default {
   name: "Gray_btn",
-  methods: {
-    FlipOption(event) {
-      console.log(event)
-      console.log('eee')
+  setup() {
+    function FlipOption(event){
       let container = event.target.closest('.container');
       container.classList.toggle('reverse');
       [...container.children].forEach(child => {
@@ -16,6 +14,7 @@ export default {
         child.classList.toggle('back-visible')
       })
     }
+    return {FlipOption}
   },
   props: {
     Content: {

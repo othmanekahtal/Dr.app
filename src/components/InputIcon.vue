@@ -1,6 +1,6 @@
 <template>
   <div class="input-box">
-    <input :type="inputType" :placeholder="inputPlaceholder" class="input-box__input">
+    <input :type="inputType" :placeholder="inputPlaceholder" class="input-box__input" v-model="InputData" @blur="transferData">
     <svg class="input-box__icon">
       <use :href="pathSprite+IconID"></use>
     </svg>
@@ -20,6 +20,10 @@ export default {
   },
   name: "InputIcon",
   props: {
+    InputData:{
+      type:String,
+      default:'',
+    },
     inputType: {
       type: String,
       default: 'text',
@@ -31,7 +35,17 @@ export default {
     IconID: {
       type: String,
       default: '#icon-edit',
+    },
+    point: {
+      type:String,
+      default:null
     }
+  },
+  methods: {
+    transferData(){
+      // console.log(this.InputData)
+      this.$emit('transferData', this.InputData,this.point)
+    },
   }
 }
 </script>
