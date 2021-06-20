@@ -17,6 +17,7 @@ export default {
 <style lang="scss" scoped>
 @import "../assets/sass/Abstracts/variables";
 button {
+  font-family: 'Poppins', sans-serif;
   cursor: pointer;
   outline:none;
   border: none;

@@ -24,7 +24,6 @@ export default {
 
 <style lang="scss" scoped>
 @import "../assets/sass/Abstracts/variables";
-
 .icon{
     fill: darken($gray-color,25%);
     width: 4rem;

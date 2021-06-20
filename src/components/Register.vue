@@ -59,6 +59,7 @@ export default {
       console.log(InfoUser)
       // console.log(InfoUser.email)
     }
+
     const API = useAPI();
     //here we need to pass params to sending request
     API.call('url',{});

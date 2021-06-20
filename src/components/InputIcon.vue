@@ -1,6 +1,6 @@
 <template>
   <div class="input-box">
-    <input :type="inputType" :placeholder="inputPlaceholder" class="input-box__input" v-model="InputData" @blur="transferData">
+    <input :type="inputType" :placeholder="inputPlaceholder" class="input-box__input" v-model="InputData" :value="InputData" @blur="transferData">
     <svg class="input-box__icon">
       <use :href="pathSprite+IconID"></use>
     </svg>
@@ -10,8 +10,6 @@
 <script>
 import Sprite from "../assets/images/sprite.svg";
 import "../assets/sass/Components/_forms.scss";
-
-
 export default {
   data() {
     return {
@@ -20,6 +18,10 @@ export default {
   },
   name: "InputIcon",
   props: {
+    InputValue:{
+      type:String,
+      default:''
+    },
     InputData:{
       type:String,
       default:'',
@@ -43,10 +45,9 @@ export default {
   },
   methods: {
     transferData(){
-      // console.log(this.InputData)
       this.$emit('transferData', this.InputData,this.point)
     },
-  }
+  },
 }
 </script>
 

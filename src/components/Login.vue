@@ -25,7 +25,7 @@
       <p>
         if you haven't an account to you can create one now!
       </p>
-      <Gray_btn @click="FlipOption($event)" Content="sign in"/>
+      <Gray_btn Content="sign in"/>
     </div>
   </div>
 </template>
@@ -37,6 +37,7 @@ import Gray_btn from './Gray_btn';
 import Icon from "./Icon";
 
 import {reactive, toRefs} from 'vue';
+import useAPI from "../use/API";
 
 export default {
   name: "login.vue",
@@ -55,7 +56,10 @@ export default {
       // console.log('working')
       console.log(InfoUser.password, InfoUser.email)
     }
-    return {...toRefs(InfoUser), Fill, ShowData}
+    const API = useAPI();
+    //here we need to pass params to sending request
+    API.call('url',{});
+    return {...toRefs(InfoUser),...API, Fill, ShowData}
   },
   components: {InputIcon, Gray_btn, Icon, Gradient_btn},
 

@@ -30,6 +30,7 @@ export default {
 @import "../assets/sass/Abstracts/variables";
 
 button {
+  font-family: 'Poppins', sans-serif;
   cursor: pointer;
   outline: none;
   border: none;
