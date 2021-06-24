@@ -7,14 +7,9 @@
       <!--    todo state manager is not changed by dynamic function-->
       <Profile/>
     </nav>
-    <div class="main">
-      <!--      <div class="title">Your Appointment</div>-->
-      <!--      <div class="rows">-->
-      <!--        <Row v-for="row in Rows" v-bind:key="row.id" :RowInfo="row"/>-->
-      <!--      </div>-->
-      <!--      id for update , Rows for listing appointments-->
-      <router-view class="router-view" :Rows="Rows"></router-view>
 
+    <div class="main" >
+      <router-view class="router-view"></router-view>
     </div>
   </div>
 </template>
@@ -24,25 +19,44 @@ import Profile from "../components/Profile";
 import Appointment from '../components/Appointment'
 import {mapState} from 'vuex';
 import {mapMutations} from 'vuex';
+import {onMounted, reactive, ref, toRefs} from "vue";
+import router from "../router";
 
 export default {
   components: {
     Profile, Appointment
   },
-  data() {
-    return {
-      Rows: [
-        {id: 12, from: '21:39', to: "21:39", status: "pending"},
-        {id: 22, from: '22:39', to: "21:34", status: "completed"}
-      ]
-    }
-  },
   computed: {
-    ...mapState(['username'])
+    ...mapState(['username', 'id', "token"]),
   },
   methods: {
     ...mapMutations(['changeState']),
-  }
+  },
+  // setup() {
+  //   let loading = ref(true);
+  //   let headersOption = new Headers();
+  //   let result_request = reactive({records: []});
+  //   onMounted(() => {
+  //     (async () => {
+  //       headersOption.append("authorization", `Bearer ${localStorage.getItem('token')}`);
+  //       let requestOption = {
+  //         method: 'GET',
+  //         headers: headersOption,
+  //       }
+  //       let request = await fetch(`http://localhost/back-end/api/records/${localStorage.getItem('id')}`, requestOption);
+  //       let result = await request.json();
+  //       if (result.error) {
+  //         console.log('error');
+  //         await router.push({name: 'login'})
+  //       } else {
+  //         result_request.records = result.records;
+  //         console.log(result_request.records)
+  //         loading.value = false;
+  //       }
+  //     })()
+  //   });
+  //   return {...toRefs(result_request),loading}
+  // },
 }
 
 </script>
@@ -72,9 +86,10 @@ export default {
 
 .main {
   position: absolute;
-  width:100%;
+  width: 100%;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  height:70vh;
 }
 </style>

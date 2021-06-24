@@ -9,7 +9,7 @@
   </li>
   <li class="option option--danger" @click="logout">
     <svg class="option__icon">
-      <use :href="`${sprite}#icon-from`"/>
+      <use :href="`${sprite}#icon-logout`"/>
     </svg>
     <div class="option__content">log out</div>
   </li>
@@ -42,23 +42,44 @@ export default {
       default: {}
     }
   },
-  computed:{
+  computed: {
     ...mapState(['id'])
   },
   methods: {
-    logout(){
-      // todo : we need to destroy localStorage,
-      // todo : send user to login
+    logout() {
+      localStorage.clear();
       console.log(this.id)
-      router.push({name:'LoginRegister'})
+      router.push({name: 'LoginRegister'})
     },
-    deleteAccount(){
-      // todo: send a request to back end to delete account user
-      // todo: verify token,password account!
-      // todo : change status in data bas
-      // todo : send to login
-      swal("Oops!", "Something went wrong!", "error");
-
+    deleteAccount() {
+      swal({
+        title: "are you sure!",
+        text: "You can't access to your account when delete it",
+        icon: "warning",
+        button: "OK",
+      }).then(value => {
+        if (value) {
+          let headersOption = new Headers();
+          headersOption.append("authorization", `Bearer ${localStorage.getItem('token')}`);
+          let requestOption = {
+            method: 'DELETE',
+            headers: headersOption,
+          }
+          fetch(`http://localhost/back-end/user/archived_account/${localStorage.getItem('id')}`, requestOption).then(result => result.json()).then(final => {
+            if (!final.error) {
+              localStorage.clear()
+              swal({
+                title: "Your Account archived successfully!",
+                icon: "success",
+                button: "OK",
+              }).then(() => {
+                    router.push({name: 'Home'})
+                  }
+              )
+            }
+          })
+        }
+      });
     }
   }
 }

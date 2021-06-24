@@ -1,35 +1,34 @@
 <template>
-  <div :class="['row',RowInfo.status]" :id="RowInfo.id">
+  <div :class="['row',record.status]" :id="record.id">
     <div class="from">
       <svg class="from-icon">
-        <use :href="`${sprite}#icon-from`"/>
+        <use :href="`${sprite}#icon-calendar`"/>
       </svg>
       <span class="from-content">
-      {{ RowInfo.from }}
+      {{ record.date }}
     </span>
     </div>
     <div class="to">
       <svg class="to-icon">
-        <use :href="`${sprite}#icon-to`"/>
+        <use :href="`${sprite}#icon-clock`"/>
       </svg>
       <span class="to-content">
-      {{ RowInfo.to }}
+      {{ time[record.time - 1] }}
     </span>
     </div>
-    <div :class="['Status',RowInfo.status]">
+    <div :class="['Status',record.status]">
       <svg class="status-icon">
-        <use :href="`${sprite}#icon-${RowInfo.status}`"/>
+        <use :href="`${sprite}#icon-${record.status}`"/>
       </svg>
       <span class="status-content">
-      {{ RowInfo.status }}
+      {{ record.status }}
     </span>
     </div>
     <div class="actions">
-      <router-link :to="{name:'update',params:{id_record:RowInfo.id}}">
-
-      <svg class="edit">
+      <router-link :to="{name:'update',params:{id_record:record.id}}" @click="save(record.id)">
+        <svg class="edit">
           <use :href="`${sprite}#icon-edit`"/>
-      </svg>
+        </svg>
       </router-link>
 
       <svg class="delete" @click="delete">
@@ -41,28 +40,67 @@
 
 <script>
 import Sprite from "../assets/images/sprite.svg";
+import {mapMutations} from "vuex/dist/vuex.mjs";
+import {mapState} from "vuex/dist/vuex.mjs";
 
 export default {
   name: "Row",
   data() {
     return {
       sprite: Sprite,
+      time: ["08:00", "10:00", "12:00", "14:00", '16:00'],
+      rows: {}
     }
   },
   methods: {
+    ...mapMutations(['changeState']),
     delete(event) {
-      const parent = event.target.closest('.row');
-      const id = parent.id;
-      console.log(id)
-      if(this.RowInfo.status!=='pending') return;
-      this.RowInfo.status = 'cancelled';
-      parent.classList.add('cancelled_appointment');
+      swal({
+        title: 'are you sure ?',
+        icon: "warning",
+        button: "ok",
+      }).then(async (value) => {
+        if (value) {
+          const parent = event.target.closest('.row');
+          const id = parent.id;
+          console.log(id)
+          let headersOption = new Headers();
+          headersOption.append("authorization", `Bearer ${localStorage.getItem('token')}`);
+          let requestOption = {
+            method: 'delete',
+            headers: headersOption,
+          }
+          if (this.record.status !== 'pending') return;
+          const request = await fetch(`http://localhost/back-end/api/status/${localStorage.getItem('id')}/${id}`, requestOption);
+          const result = await request.json();
+          if (!result.error) {
+            this.record.status = 'cancelled';
+            parent.classList.add('cancelled_appointment');
+          } else {
+            swal({
+              title: result.message,
+              icon: "error",
+              button: "ok",
+            });
+          }
+        }
+      })
     },
+    save(id){
+      localStorage.setItem('id_record',id);
+    }
   },
   props: {
     RowInfo: {
       type: Object,
       default: {}
+    }
+  },
+  computed: {
+    ...mapState(['id','id_record','date']),
+    record() {
+      this.rows = this.RowInfo;
+      return this.rows
     }
   }
 }
@@ -82,7 +120,7 @@ export default {
   color: $color-Grey-dark-3;
   transition: .25s linear;
 
-  &.cancelled,&.completed{
+  &.cancelled, &.completed {
     &:hover {
       background-color: $color-Grey-light-3;
     }
@@ -91,8 +129,10 @@ export default {
       a {
         pointer-events: none;
       }
+
       svg {
         cursor: not-allowed;
+
         &.delete {
           fill: lighten($color-Red-1, 15%);
 
@@ -111,6 +151,7 @@ export default {
       }
     }
   }
+
   &:hover {
     background-color: white;
   }

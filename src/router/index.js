@@ -1,23 +1,66 @@
 import {createRouter, createWebHistory} from 'vue-router'
-import Home from '../views/Home.vue'
-import LoginRegister from "../views/LoginRegister";
 import Forget from "../views/Forget";
-import Dashboard from "../views/Dashboard";
 import Rows from "../components/Appointment"
 import add from "../components/add"
 import update from "../components/update"
-
 
 const routes = [
     {
         path: '/',
         name: 'Home',
-        component: Home
+        component: () => import(/* webpackChunkName: "login_register" */ '../views/LoginRegister.vue'),
+        beforeEnter(to, from, next) {
+            const token = localStorage.getItem('token') || false;
+            if (!token) {
+                next();
+            } else {
+                const headers = new Headers();
+                headers.append('authorization', token);
+                const requestOptions = {
+                    method: 'GET',
+                    headers: headers,
+                };
+
+                fetch("http://localhost/back-end/Auth/verify", requestOptions)
+                    .then(response => response.json())
+                    .then(result => {
+                        if (result == null) {
+                            next();
+                        } else {
+                            next({name: 'dashboard'});
+                        }
+                    })
+            }
+        }
     },
     {
         path: '/login',
         name: 'LoginRegister',
-        component: LoginRegister
+        component: () => import(/* webpackChunkName: "login_register" */ '../views/LoginRegister'),
+        beforeEnter(to, from, next) {
+            const token = localStorage.getItem('token') || false;
+            if (!token) {
+                next();
+            } else {
+                const headers = new Headers();
+                headers.append('authorization', token);
+                const requestOptions = {
+                    method: 'GET',
+                    headers: headers,
+                };
+
+                fetch("http://localhost/back-end/Auth/verify", requestOptions)
+                    .then(response => response.json())
+                    .then(result => {
+                        if (result == null) {
+                            next();
+                        } else {
+                            next({name: 'dashboard'});
+                        }
+                    })
+            }
+        }
+
     },
     {
         path: '/forget',
@@ -27,25 +70,54 @@ const routes = [
     {
         path: '/dashboard',
         name: 'dashboard',
-        component: Dashboard,
-        children:[
+        component: () => import(/* webpackChunkName: "login_register" */ '../views/Dashboard.vue'),
+
+        beforeEnter(to, from, next) {
+            const token = localStorage.getItem('token') || false;
+            if (token) {
+                const headers = new Headers();
+                headers.append('authorization', token);
+                const requestOptions = {
+                    method: 'GET',
+                    headers: headers,
+                };
+                fetch("http://localhost/back-end/Auth/verify", requestOptions)
+                    .then(response => response.json())
+                    .then(result => {
+                        if (!result.error) {
+                            next();
+                        } else {
+                            next({name: 'LoginRegister'});
+                        }
+                    })
+            } else {
+                next({name: 'LoginRegister'});
+            }
+        },
+        children: [
             {
-                name:'appointment',
-                path:'/dashboard',
-                component:Rows
+                name: 'appointment',
+                path: '/dashboard/appointment',
+                component: Rows
             },
             {
-                name:'add',
-                path:'/dashboard/add',
-                component:add
+                name: 'add',
+                path: '/dashboard/add',
+                component: add
             },
             {
-                name:'update',
-                path:'/dashboard/update/:id_record',
-                component:update
+                name: 'update',
+                path: '/dashboard/update/:id_record',
+                component: update
             }
         ]
-    }
+    },
+    {
+        path: '/:catchAll(.*)',
+        name: 'Notfound',
+        component: () => import(/* webpackChunkName: "login_register" */ '../views/404.vue'),
+
+    },
 ]
 
 const router = createRouter({

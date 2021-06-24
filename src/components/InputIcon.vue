@@ -1,6 +1,6 @@
 <template>
   <div class="input-box">
-    <input :type="inputType" :placeholder="inputPlaceholder" class="input-box__input" v-model="InputData" :value="InputData" @blur="transferData">
+    <input :type="inputType" :placeholder="inputPlaceholder" class="input-box__input" v-model="InputData" :value="InputData" @change="transferData">
     <svg class="input-box__icon">
       <use :href="pathSprite+IconID"></use>
     </svg>
@@ -78,6 +78,15 @@ export default {
     left: 1.5rem;
     top: 50%;
     transform: translateY(-50%);
+  }
+  input[type='time'],input[type='date']{
+    position: relative;
+  }
+  input[type="time"]::-webkit-calendar-picker-indicator,input[type="date"]::-webkit-calendar-picker-indicator {
+    background: none;
+    position: absolute;
+    width: 100%;
+    height: 100%;
   }
 }
 </style>
