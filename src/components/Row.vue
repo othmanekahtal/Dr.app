@@ -131,9 +131,9 @@ export default {
       }
 
       svg {
-        cursor: not-allowed;
-
         &.delete {
+          pointer-events: none;
+
           fill: lighten($color-Red-1, 15%);
 
           &:hover {
@@ -192,6 +192,7 @@ export default {
       $color: rgba(#FF616D, 85%);
 
       & > * {
+        pointer-events: none;
         color: $color;
         fill: $color;
       }

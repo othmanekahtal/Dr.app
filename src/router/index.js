@@ -20,11 +20,10 @@ const routes = [
                     method: 'GET',
                     headers: headers,
                 };
-
                 fetch("http://localhost/back-end/Auth/verify", requestOptions)
                     .then(response => response.json())
                     .then(result => {
-                        if (result == null) {
+                        if (result.error) {
                             next();
                         } else {
                             next({name: 'dashboard'});
@@ -52,7 +51,7 @@ const routes = [
                 fetch("http://localhost/back-end/Auth/verify", requestOptions)
                     .then(response => response.json())
                     .then(result => {
-                        if (result == null) {
+                        if (!result.error) {
                             next();
                         } else {
                             next({name: 'dashboard'});

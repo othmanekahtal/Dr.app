@@ -17,10 +17,7 @@
 <script>
 import Profile from "../components/Profile";
 import Appointment from '../components/Appointment'
-import {mapState} from 'vuex';
-import {mapMutations} from 'vuex';
-import {onMounted, reactive, ref, toRefs} from "vue";
-import router from "../router";
+import {mapState,mapMutations} from 'vuex';
 
 export default {
   components: {
@@ -32,31 +29,6 @@ export default {
   methods: {
     ...mapMutations(['changeState']),
   },
-  // setup() {
-  //   let loading = ref(true);
-  //   let headersOption = new Headers();
-  //   let result_request = reactive({records: []});
-  //   onMounted(() => {
-  //     (async () => {
-  //       headersOption.append("authorization", `Bearer ${localStorage.getItem('token')}`);
-  //       let requestOption = {
-  //         method: 'GET',
-  //         headers: headersOption,
-  //       }
-  //       let request = await fetch(`http://localhost/back-end/api/records/${localStorage.getItem('id')}`, requestOption);
-  //       let result = await request.json();
-  //       if (result.error) {
-  //         console.log('error');
-  //         await router.push({name: 'login'})
-  //       } else {
-  //         result_request.records = result.records;
-  //         console.log(result_request.records)
-  //         loading.value = false;
-  //       }
-  //     })()
-  //   });
-  //   return {...toRefs(result_request),loading}
-  // },
 }
 
 </script>

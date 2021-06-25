@@ -3,14 +3,16 @@
     <img src="../assets/images/404.svg" alt="error 404">
 
     <router-link :to="{name:'appointment'}">
-      <div class="button">Return to Home page</div>
+      <Gradient_btn Content="Return to Home page"/>
     </router-link>
   </div>
 </template>
 
 <script>
+import Gradient_btn from "../components/Gradient_btn";
 export default {
-  name: "404"
+  name: "404",
+  components: {Gradient_btn}
 }
 </script>
 
@@ -28,18 +30,6 @@ export default {
 
   img {
     width: 100%;
-  }
-
-  .button {
-    border-radius: .5rem;
-    padding: 1.5rem 3.5rem;
-    background-color: #7166e0;
-    color: white;
-  }
-
-  a {
-    color: white;
-    text-decoration: none;
   }
 }
 </style>
